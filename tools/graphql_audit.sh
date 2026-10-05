@@ -3,7 +3,7 @@
 # GraphQL Security Audit — multi-phase sweep for common GraphQL vulnerabilities
 #
 # Phases: introspection -> fingerprint -> field discovery -> batching DoS ->
-#         alias bomb -> injection scan (gqlmap) -> graphql-cop checklist
+#         alias bomb -> injection scan (built-in) -> graphql-cop checklist
 #
 # Falls back to built-in curl probes when optional tools are missing.
 #
@@ -248,32 +248,32 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Phase 5: Injection scan (gqlmap)
+# Phase 5: Injection scan
 # ---------------------------------------------------------------------------
 log "Phase 5 -- injection scan"
-GQLMAP_OUT="$OUT_DIR/gqlmap.txt"
+INJECTION_OUT="$OUT_DIR/injection.txt"
 
-if _have gqlmap; then
-  GQLMAP_ARGS=(--target "$URL" --query '{ users(search: GQLMAP) { id } }')
-  [ -n "$PROXY" ] && GQLMAP_ARGS+=(--proxy "$PROXY")
-  gqlmap "${GQLMAP_ARGS[@]}" 2>&1 | tee "$GQLMAP_OUT" || true
-  echo "injection_scan: completed (see gqlmap.txt)" >> "$SUMMARY"
-else
-  skip "gqlmap"
-  echo "(install: pip install gqlmap)" > "$GQLMAP_OUT"
-  echo "injection_scan: skipped (gqlmap not installed)" >> "$SUMMARY"
+{
+  echo "injection_scan: built-in probe"
+  echo "(gqlmap was removed: it has no upstream repository and its PyPI name was"
+  echo " unregistered, which made 'pip install gqlmap' a dependency-confusion vector."
+  echo " For deeper injection testing drive sqlmap against the GraphQL request body:"
+  echo "   sqlmap -u \"$URL\" --data '{\"query\":\"{ users(search:\\\"*\\\"){id} }\"}' \\"
+  echo "          --headers='Content-Type: application/json' --level 3)"
+} > "$INJECTION_OUT"
 
+{
   # Built-in quick SQLi probe
   log "Built-in SQLi quick probe..."
   SQLI_RESP=$(_gql_post '{"query":"{ users(search: \"1'\''--\") { id } }"}' 2>/dev/null || true)
   if echo "$SQLI_RESP" | grep -qi "syntax\|mysql\|pgsql\|sqlite\|ORA-\|error in your SQL"; then
     hit "SQL error in response -- possible SQLi in search argument"
-    echo "$SQLI_RESP" >> "$GQLMAP_OUT"
+    echo "$SQLI_RESP" >> "$INJECTION_OUT"
     echo "sqli_quick_probe: POSSIBLE HIT" >> "$SUMMARY"
   else
     echo "sqli_quick_probe: no obvious errors" >> "$SUMMARY"
   fi
-fi
+}
 
 # ---------------------------------------------------------------------------
 # Phase 6: graphql-cop checklist
@@ -288,7 +288,7 @@ if _have graphql-cop; then
   echo "graphql_cop: completed (see cop_report.txt)" >> "$SUMMARY"
 else
   skip "graphql-cop"
-  echo "(install: pip install graphql-cop)" > "$COP_OUT"
+  echo "(install: git clone https://github.com/dolevf/graphql-cop)" > "$COP_OUT"
   echo "graphql_cop: skipped (not installed)" >> "$SUMMARY"
 fi
 

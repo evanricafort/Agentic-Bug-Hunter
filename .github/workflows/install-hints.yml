@@ -1,0 +1,28 @@
+name: install-hints
+
+# Guards against dependency confusion in the tool arsenal: every pip/pipx
+# install hint must name a PyPI project that actually exists. An unclaimed
+# name on an agent's execution path is arbitrary code execution waiting for
+# whoever registers it.
+
+on:
+  push:
+    branches: [main]
+    paths: ['tools/external_arsenal.sh', 'scripts/check_install_hints.sh']
+  pull_request:
+    paths: ['tools/external_arsenal.sh', 'scripts/check_install_hints.sh']
+  schedule:
+    - cron: '0 6 * * 1'   # weekly: a name can be yanked after it ships
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: install hints resolve on PyPI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check every pip/pipx install hint
+        run: ./scripts/check_install_hints.sh

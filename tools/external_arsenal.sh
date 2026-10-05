@@ -54,11 +54,11 @@ ARSENAL_TOOLS=(
   "nuclei|scan|GOBIN=\$HOME/go/bin go install github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest|github.com/projectdiscovery/nuclei"
   "dalfox|xss|GOBIN=\$HOME/go/bin go install github.com/hahwul/dalfox/v2@latest|github.com/hahwul/dalfox"
   "xsstrike|xss|pipx install XSStrike  # or git clone|github.com/s0md3v/XSStrike"
-  "ghauri|sqli|pipx install ghauri|github.com/r0oth3x49/ghauri"
+  "ghauri|sqli|pipx install git+https://github.com/r0oth3x49/ghauri|github.com/r0oth3x49/ghauri"
   "sqlmap|sqli|brew install sqlmap|github.com/sqlmapproject/sqlmap"
   "fuxploider|upload|git clone https://github.com/almandin/fuxploider|github.com/almandin/fuxploider"
   "log4j-scan|cve|git clone https://github.com/fullhunt/log4j-scan|github.com/fullhunt/log4j-scan"
-  "linkfinder|js|pipx install linkfinder|github.com/GerbenJavado/LinkFinder"
+  "linkfinder|js|git clone https://github.com/GerbenJavado/LinkFinder  (no PyPI release; setup.py exposes no entry point, run linkfinder.py from a venv)|github.com/GerbenJavado/LinkFinder"
   # ── Secrets / credential discovery ──────────────────────────────────────
   "trufflehog|secrets|brew install trufflehog|github.com/trufflesecurity/trufflehog"
   "noseyparker|secrets|brew install noseyparker|github.com/praetorian-inc/noseyparker"
@@ -67,15 +67,15 @@ ARSENAL_TOOLS=(
   "git-hound|secrets|GOBIN=\$HOME/go/bin go install github.com/tillson/git-hound@latest|github.com/tillson/git-hound"
   # ── Cloud / S3 ──────────────────────────────────────────────────────────
   "s3scanner|cloud|GOBIN=\$HOME/go/bin go install github.com/sa7mon/s3scanner@latest|github.com/sa7mon/S3Scanner"
-  "cloud_enum|cloud|pipx install cloud-enum|github.com/initstring/cloud_enum"
+  "cloud_enum|cloud|pipx install git+https://github.com/initstring/cloud_enum|github.com/initstring/cloud_enum"
   "cloudfail|cloud|git clone https://github.com/m0rtem/CloudFail|github.com/m0rtem/CloudFail"
   "scoutsuite|cloud|pipx install scoutsuite|github.com/nccgroup/ScoutSuite"
   # ── Subdomain takeover ──────────────────────────────────────────────────
-  "dnsreaper|takeover|pipx install dnsreaper  # or docker|github.com/punk-security/dnsReaper"
+  "dnsreaper|takeover|git clone https://github.com/punk-security/dnsReaper  (no PyPI release; or use the published Docker image)|github.com/punk-security/dnsReaper"
   "subjack|takeover|GOBIN=\$HOME/go/bin go install github.com/haccer/subjack@latest|github.com/haccer/subjack"
   # ── 403 / WAF bypass ────────────────────────────────────────────────────
   "byp4xx|bypass|GOBIN=\$HOME/go/bin go install github.com/lobuhi/byp4xx@latest|github.com/lobuhi/byp4xx"
-  "whatwaf|bypass|pipx install whatwaf|github.com/Ekultek/WhatWaf"
+  "whatwaf|bypass|git clone https://github.com/Ekultek/WhatWaf  (no PyPI release; setup.py imports requests at build time, run whatwaf.py from a venv)|github.com/Ekultek/WhatWaf"
   "unwaf|bypass|GOBIN=\$HOME/go/bin go install github.com/mmarting/unwaf@latest|github.com/mmarting/unwaf"
   # ── Credential attack / password spray ──────────────────────────────────
   "hashcat|cred|brew install hashcat|hashcat.net/hashcat"
@@ -86,10 +86,9 @@ ARSENAL_TOOLS=(
   # ── GraphQL ─────────────────────────────────────────────────────────────
   "graphw00f|graphql|pip install graphw00f|github.com/dolevf/graphw00f"
   "clairvoyance|graphql|pip install clairvoyance|github.com/nikitastupin/clairvoyance"
-  "gqlmap|graphql|pip install gqlmap|github.com/nicola-inchingolo/gqlmap"
-  "graphql-cop|graphql|pip install graphql-cop|github.com/dolevf/graphql-cop"
+  "graphql-cop|graphql|git clone https://github.com/dolevf/graphql-cop  (no PyPI release; run graphql-cop.py from a venv)|github.com/dolevf/graphql-cop"
   # ── JWT / auth ──────────────────────────────────────────────────────────
-  "jwt_tool|jwt|pipx install jwt-tool|github.com/ticarpi/jwt_tool"
+  "jwt_tool|jwt|git clone https://github.com/ticarpi/jwt_tool  (no PyPI release; run jwt_tool.py from a venv)|github.com/ticarpi/jwt_tool"
   # ── Bug bounty scope tooling ────────────────────────────────────────────
   "bbscope|scope|GOBIN=\$HOME/go/bin go install github.com/sw33tLie/bbscope@latest|github.com/sw33tLie/bbscope"
   # ── Mobile ──────────────────────────────────────────────────────────────
@@ -105,7 +104,7 @@ ARSENAL_TOOLS=(
   "maigret|osint|pipx install maigret|github.com/soxoj/maigret"
   "pywhat|osint|pipx install pywhat|github.com/bee-san/pyWhat"
   # ── DNS history / origin IP ─────────────────────────────────────────────
-  "sublert|recon|pipx install sublert|github.com/yassineaboukir/sublert"
+  "sublert|recon|git clone https://github.com/yassineaboukir/sublert  (no PyPI release; no entry point, run sublert.py from a venv)|github.com/yassineaboukir/sublert"
   # ── Misc ────────────────────────────────────────────────────────────────
   "gf|filter|GOBIN=\$HOME/go/bin go install github.com/tomnomnom/gf@latest|github.com/tomnomnom/gf"
   "qsreplace|filter|GOBIN=\$HOME/go/bin go install github.com/tomnomnom/qsreplace@latest|github.com/tomnomnom/qsreplace"
